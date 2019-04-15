@@ -1,0 +1,10 @@
+/* 改变主题色变量 */
+$--color-primary: $def-bgc;
+
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+/*按需引入用到的组件的scss文件和基础scss文件*/
+@import "~element-ui/packages/theme-chalk/src/base.scss";
+@import "~element-ui/packages/theme-chalk/src/button.scss";
+@import "~element-ui/packages/theme-chalk/src/input.scss";

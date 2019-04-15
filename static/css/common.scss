@@ -1,0 +1,9 @@
+$def-width: 360px;
+$def-bgc: rgb(253, 133, 133);
+$def-color:#005f03;
+
+@function pxTorem($px) {
+  @return ($px / $def-width) * 1rem;
+}
+
+@import './cssreset.css';
