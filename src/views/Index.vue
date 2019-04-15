@@ -79,6 +79,12 @@ export default {
     },
     handleMessage(data) {
       this.list.push({ ...data });
+      if (data.u_id != this.me.id) {
+        this.$push.create("有消息了", {
+          icon: require("@/assets/img/logo.png"),
+          body: `${data.name}: ${data.message}`
+        });
+      }
     },
     handleMe(data) {
       this.me = { ...data };
@@ -101,7 +107,7 @@ export default {
         showCancelButton: false,
         distinguishCancelAndClose: true,
         showClose: false,
-        center:true,
+        center: true,
         inputErrorMessage: "昵称不能为空"
       }).then(({ value }) => {
         // 接受自己的 cocket id 和 名字
