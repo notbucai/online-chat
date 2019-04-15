@@ -64,6 +64,7 @@ export default {
     border-radius: 4px;
     position: relative;
     word-wrap: break-word;
+    white-space: pre-wrap;
     &::before {
       content: "";
       position: absolute;

@@ -1,7 +1,7 @@
 <template>
   <div id="index">
-    <el-row>
-      <el-col :span="5">
+    <el-row type="flex">
+      <el-col :span="5" class="hidden-xs-only">
         <div class="box left">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -11,7 +11,7 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="19">
+      <el-col :span="19" :xs="24">
         <div class="box right">
           <el-card class="box-card">
             <!-- header -->
@@ -101,6 +101,7 @@ export default {
         showCancelButton: false,
         distinguishCancelAndClose: true,
         showClose: false,
+        center:true,
         inputErrorMessage: "昵称不能为空"
       }).then(({ value }) => {
         // 接受自己的 cocket id 和 名字
