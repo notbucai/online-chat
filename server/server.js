@@ -12,7 +12,7 @@ const OnlineChat = require('./OnlineChat');
 const oc = new OnlineChat(io);
 oc.init();
 // 配置
-const PORT = 2333;
+const PORT = 1123;
 
 // 绑定路由
 app.use(router.routes())

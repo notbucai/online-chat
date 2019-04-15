@@ -1,3 +1,4 @@
+const filter = require('./filter/filter');
 module.exports = class OnlineChat {
 
   constructor(io) {
@@ -45,9 +46,9 @@ module.exports = class OnlineChat {
     this.sendUserList();
   }
   addUser({ id, name }) {
-    this.userList.push({ id, name });
+    this.userList.push({ id, name: filter(name) });
     this.userList = Array.from(new Set(this.userList));
-    console.log(this.userList);
+    console.log(this.userList, "1");
     this.sendUserList();
   }
   joinChat() {
@@ -62,7 +63,7 @@ module.exports = class OnlineChat {
     this.io.emit('message', {
       ...user,
       u_id: user.id,
-      message: message,
+      message: filter(message),
       id: String(Math.random() * 1000000000)
     });
 
