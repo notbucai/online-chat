@@ -138,7 +138,9 @@ module.exports = {
     new webpack.LoaderOptionsPlugin({
       minimize: !isDev
     }),
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin({
+      openAnalyzer:false
+    })
   ],
   resolve: {
     alias: {
