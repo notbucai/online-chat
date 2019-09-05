@@ -202,4 +202,10 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.el-message-box--center.el-message-box{
+  @media (max-width: 800px) {
+    width: auto;
+  }
+}
 </style>
+

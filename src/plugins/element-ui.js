@@ -9,6 +9,7 @@ import {
   Card,
   MessageBox,
   Message,
+  Popover
 } from 'element-ui';
 
 Vue.use(Input);
@@ -18,6 +19,7 @@ Vue.use(FormItem);
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Card);
+Vue.use(Popover);
 
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;

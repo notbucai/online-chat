@@ -4,7 +4,7 @@ const http = require('http');
 
 // 初始化
 const app = new Koa();
-const server = http.createServer(app.callback())；
+const server = http.createServer(app.callback());
 const io = require('socket.io')(server);
 const router = new KoaRouter();
 const OnlineChat = require('./OnlineChat');

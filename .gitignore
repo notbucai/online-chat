@@ -1,3 +1,4 @@
 /test
 /node_modules
 server/website.config.json
+/dist
