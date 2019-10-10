@@ -12,12 +12,21 @@ module.exports = class OnlineChat {
     this.io.on('connection', socket => {
       console.log(`io => ID:${socket.id} 用户链接`);
       // 只监听一次 监听 用户 创建
-      socket.once('create', data => {
-        console.log("io => 用户创建：" + data);
+      socket.on('create', data => {
+        console.log("io => 用户准备创建：" + data);
+        if (this.isUserExist(data.name)) {
+          this.error(socket, {
+            code: 101,
+            msg: '用户名已存在'
+          });
+          return;
+        }
         this.addUser({
           id: socket.id,
           name: data.name
         });
+        console.log("io => 用户创建成功：" + data);
+
         // 发送 当前对象
         this.sendMe(socket, data.name);
 
@@ -45,18 +54,32 @@ module.exports = class OnlineChat {
     console.log(this.userList);
     this.sendUserList();
   }
+  isUserExist(name) {
+    return this.userList.findIndex(item => item.name == name) !== -1;
+  }
   addUser({ id, name }) {
+
     this.userList.push({ id, name: filter(name) });
     this.userList = Array.from(new Set(this.userList));
     console.log(this.userList, "1");
     this.sendUserList();
   }
+
+  error(socket, { code, msg }) {
+    socket.emit('user-error', {
+      code,
+      msg
+    });
+  }
+
   joinChat() {
     this.io.emit('join-chat');
   }
+
   sendUserList() {
     this.io.emit('user-list', [...this.userList]);
   }
+
   sendMsg({ id, message }) {
     const user = this.userList.find(item => item.id == id) || {};
 

@@ -23,11 +23,11 @@
               <!-- 内容显示区域 -->
               <div class="main" ref="scrollMain">
                 <template v-for="item in list">
-                  <msg-item :key="item.id" :isme="item.u_id == me.id" v-bind="item"/>
+                  <msg-item :key="item.id" :isme="item.u_id == me.id" v-bind="item" />
                 </template>
               </div>
               <!-- 编辑器 表单 -->
-              <edit-form @send="handleSendMsg"/>
+              <edit-form @send="handleSendMsg" />
             </template>
           </el-card>
         </div>
@@ -37,15 +37,22 @@
 </template>
 
 <script>
-import MsgItem from "@/components/index/MsgItem.vue";
-import EditForm from "@/components/index/EditForm.vue";
+import MsgItem from '@/components/index/MsgItem.vue';
+import EditForm from '@/components/index/EditForm.vue';
 export default {
-  name: "Index",
+  name: 'Index',
   created() {
+    this.$io.on('user-list', this.handleUserlist);
+    this.$io.on('user-error', this.handleError);
+    this.$io.on('message', this.handleMessage);
+    this.$io.once('me', this.handleMe);
     // this.$io.emit("create", { name: "不才" });
-    this.openInit();
-    this.$io.on("user-list", this.handleUserlist);
-    this.$io.on("message", this.handleMessage);
+    const name = localStorage.getItem('name');
+    if (name) {
+      this.handleSendCreate(name);
+    } else {
+      this.openInit();
+    }
   },
   components: {
     MsgItem,
@@ -56,8 +63,8 @@ export default {
       list: [],
       users: [],
       me: {
-        id: "",
-        name: ""
+        id: '',
+        name: ''
       }
     };
   },
@@ -67,39 +74,57 @@ export default {
       handler(val, oldVal) {
         // 异步执行 防止 没有渲染就执行了
         setTimeout(() => {
-          const el = this.$refs["scrollMain"];
+          const el = this.$refs['scrollMain'];
           el.scrollTop = el.scrollHeight + 800;
         }, 0);
       }
     }
   },
   methods: {
+    handleError({ code, msg }) {
+      switch (code) {
+        case 101:
+          // 用户名已经存在
+          this.openInit();
+          break;
+
+        default:
+          break;
+      }
+    },
     handleUserlist(data) {
       this.users = [...data];
     },
     handleMessage(data) {
       this.list.push({ ...data });
       if (data.u_id != this.me.id) {
-        this.$push.create("有消息了", {
-          icon: require("@/assets/img/logo.png"),
+        this.$push.create('有消息了', {
+          icon: require('@/assets/img/logo.png'),
           body: `${data.name}: ${data.message}`
         });
       }
     },
     handleMe(data) {
       this.me = { ...data };
+      console.log(data);
+      localStorage.setItem('name', data.name);
+      this.$message({
+        type: 'success',
+        message: '你的昵称是: ' + data.name
+      });
     },
     handleSendMsg(message) {
-      this.$io.emit("message", {
+      this.$io.emit('message', {
         message
       });
     },
     handleSendCreate(value) {
-      this.$io.emit("create", { name: value });
+      // 接受自己的 cocket id 和 名字
+      this.$io.emit('create', { name: value });
     },
     openInit() {
-      this.$prompt("请输入昵称", "提示", {
-        confirmButtonText: "确定",
+      this.$prompt('请输入昵称', '提示', {
+        confirmButtonText: '确定',
         inputPattern: /.+/,
         closeOnPressEscape: false,
         closeOnHashChange: false,
@@ -108,16 +133,10 @@ export default {
         distinguishCancelAndClose: true,
         showClose: false,
         center: true,
-        inputErrorMessage: "昵称不能为空"
+        inputErrorMessage: '昵称不能为空'
       }).then(({ value }) => {
-        // 接受自己的 cocket id 和 名字
-        this.$io.once("me", this.handleMe);
         // 触发创建
         this.handleSendCreate(value);
-        this.$message({
-          type: "success",
-          message: "你的昵称是: " + value
-        });
       });
     }
   },
@@ -190,7 +209,7 @@ export default {
 .clearfix:before,
 .clearfix:after {
   display: table;
-  content: "";
+  content: '';
 }
 </style>
 
@@ -202,7 +221,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.el-message-box--center.el-message-box{
+.el-message-box--center.el-message-box {
   @media (max-width: 800px) {
     width: auto;
   }

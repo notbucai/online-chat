@@ -15,14 +15,14 @@ oc.init();
 // 配置
 const PORT = 1123;
 
-app.use(redis());
+// app.use(redis());
 
-// 绑定路由
-app.use(router.routes()).use(router.allowedMethods());
+// // 绑定路由
+// app.use(router.routes()).use(router.allowedMethods());
 
-router.get('/', async function (ctx, next) {
-  ctx.body = "123";
-});
+// router.get('/', async function (ctx, next) {
+//   ctx.body = "123";
+// });
 
 
 server.listen(PORT, function () {
