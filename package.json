@@ -57,7 +57,7 @@
     "koa": "^2.8.1",
     "koa-router": "^7.4.0",
     "push.js": "^1.0.12",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.4.0",
     "socket.io-client": "^2.2.0",
     "v-emoji-picker": "^1.1.6",
     "vue": "^2.6.10",
